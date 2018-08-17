@@ -18,7 +18,11 @@
             android:layout_alignParentTop="true"
             android:padding="5dp"
             android:text="@string/list_of_cows"
-            android:textAppearance="@android:style/TextAppearance.Large" />
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
 
         <ListView
             android:id="@+id/id_lv_cows"

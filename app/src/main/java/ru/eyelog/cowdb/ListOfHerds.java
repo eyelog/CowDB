@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,6 +25,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.apache.http.NameValuePair;
@@ -82,6 +84,7 @@ public class ListOfHerds extends AppCompatActivity {
 
     // Блок загрузки данных.
     private ProgressDialog pDialog;
+    CountDownTimer countDownTimer;
 
     JSONObject json, subJson;
     JSONParser jParser;
@@ -153,7 +156,7 @@ public class ListOfHerds extends AppCompatActivity {
 
     public void ListPresenter(String id){
 
-        // Загружаем продукты в фоновом потоке
+        // Загружаем стада в фоновом потоке
 
         hm = new HashMap<>();
         hm.put(TAG_ID_FARM, id);
@@ -167,8 +170,7 @@ public class ListOfHerds extends AppCompatActivity {
         stMainTitle += " " + farmsListName.get(flipStep);
         tvMainTitle.setText(stMainTitle);
 
-        // на выбор одного продукта
-        // запускается Edit Product Screen
+        // на выбор одного стада
         lv_herds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -210,6 +212,7 @@ public class ListOfHerds extends AppCompatActivity {
 
     }
 
+    // Перемотка влево
     private void SwipeLeft() {
         if(flipStep<limitOfFlips){
             flipper.setInAnimation(animFlipInBackward);
@@ -222,6 +225,7 @@ public class ListOfHerds extends AppCompatActivity {
         }
     }
 
+    // Перемотка вправо
     private void SwipeRight() {
         if(flipStep>0){
             flipper.setInAnimation(animFlipInForward);
@@ -233,11 +237,11 @@ public class ListOfHerds extends AppCompatActivity {
         }
     }
 
+    // Обработка флипа
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
-
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
@@ -285,7 +289,7 @@ public class ListOfHerds extends AppCompatActivity {
             // Показ статистики персонажа.
             case CNX_UPDATE:
 
-                // Переименовываем ферму на основании её ID.
+                // Переименовываем стадо на основании его ID.
                 // Создаём всплывающее окно для создания новой записи.
                 createDialog = new AlertDialog.Builder(context);
                 // Подгружаем форму всплывающего окна и инициируем его компоненты.
@@ -348,7 +352,7 @@ public class ListOfHerds extends AppCompatActivity {
 
             // Удаление Персонажа.
             case CNX_DEL:
-                // Удаляем ферму на основании её ID.
+                // Удаляем стадо на основании его ID.
                 // Запрашиваем подтверждение удаления.
                 del_dialog = new AlertDialog.Builder(context);
 
@@ -456,7 +460,7 @@ public class ListOfHerds extends AppCompatActivity {
     }
 
     /**
-     * Фоновый Async Task для загрузки всех ферм по HTTP запросу
+     * Фоновый Async Task для загрузки всех стадов (стад =)) по HTTP запросу
      * */
     class DBConnector extends AsyncTask<String, String, String> {
 
@@ -515,10 +519,25 @@ public class ListOfHerds extends AppCompatActivity {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
+
+            // Ждем ответа сервера в течении 7-ми секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector.cancel(true);
+                }
+            };
+            countDownTimer.start();
         }
 
         /**
-         * Получаем все продукт из url
+         * Получаем все стада из url
          * */
         protected String doInBackground(String... args) {
             // Будет хранить параметры
@@ -569,8 +588,8 @@ public class ListOfHerds extends AppCompatActivity {
                     }
 
                 } else {
-                    // Фермы не найдены.
-                    // Выводим в список единственную строку: "Ферм нет"
+                    // Стада не найдены.
+                    // Выводим в список единственную строку: "Пусто"
 
                     // Создаем новый HashMap
                     hm = new HashMap<String, String>();
@@ -599,6 +618,7 @@ public class ListOfHerds extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // закрываем прогресс диалог после получение все продуктов
             pDialog.dismiss();
+            countDownTimer.cancel();
             // обновляем UI форму в фоновом потоке
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -626,6 +646,13 @@ public class ListOfHerds extends AppCompatActivity {
                     lv_herds.setAdapter(adapter);
                 }
             });
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }

@@ -47,28 +47,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_name"
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
 
                 <TextView
                     android:id="@+id/id_tv_title_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_id"
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
 
                 <TextView
                     android:id="@+id/id_tv_title_herd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_herd"
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
 
                 <TextView
                     android:id="@+id/id_tv_title_farm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_farm"
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:shadowColor="@color/text_shadow"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -102,7 +118,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:text="@string/data_values"
-                                android:textAppearance="@android:style/TextAppearance.Large" />
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:shadowColor="@color/text_shadow"
+                                android:shadowDx="1"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"/>
 
                             <ListView
                                 android:id="@+id/id_lv_value"
@@ -119,6 +139,13 @@
                                 android:layout_gravity="right"
                                 android:onClick="onNewValue"
                                 android:text="@string/add_data_value" />
+
+                            <Button
+                                android:id="@+id/id_bt_grph_val"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="@string/bt_graph" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -131,7 +158,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/data_weights"
-                                android:textAppearance="@android:style/TextAppearance.Large" />
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:shadowColor="@color/text_shadow"
+                                android:shadowDx="1"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"/>
 
                             <ListView
                                 android:id="@+id/id_lv_weight"
@@ -146,6 +177,13 @@
                                 android:onClick="onNewWeight"
                                 android:text="@string/add_data_weight" />
 
+                            <Button
+                                android:id="@+id/id_bt_grph_weight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="@string/bt_graph" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -158,7 +196,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/data_temps"
-                                android:textAppearance="@android:style/TextAppearance.Large" />
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:shadowColor="@color/text_shadow"
+                                android:shadowDx="1"
+                                android:shadowDy="1"
+                                android:shadowRadius="2"/>
 
                             <ListView
                                 android:id="@+id/id_lv_temp"
@@ -172,6 +214,13 @@
                                 android:layout_gravity="right"
                                 android:onClick="onNewTemp"
                                 android:text="@string/add_data_temp" />
+
+                            <Button
+                                android:id="@+id/id_bt_grph_temp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:text="@string/bt_graph" />
 
                         </LinearLayout>
 

@@ -10,6 +10,8 @@ import java.util.Date;
 
 public class Cow_age {
 
+    // Отдельный класс для расчёта возраста коровы.
+
     Context context;
     String gotDate, st_age;
     String [] stArrayBirthDay = new String[3];

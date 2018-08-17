@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -27,6 +28,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.apache.http.NameValuePair;
@@ -93,8 +95,11 @@ public class ACowTableForm extends AppCompatActivity {
     private static final String[] TAG_DATE_VALUES = new String[]{"date_cow", "date_cow", "date_cow"};
     private static final String[] TAG_VALUE_VALUES = new String[]{"value_cow", "weight_cow", "temp_cow"};
 
+    private String MESSAGE_NO_DATA;
+
     // Блок загрузки данных.
     private ProgressDialog pDialog;
+    CountDownTimer countDownTimer;
 
     JSONObject json, subJson;
     JSONParser jParser;
@@ -130,6 +135,11 @@ public class ACowTableForm extends AppCompatActivity {
     Animation animFlipOutForward;
     Animation animFlipInBackward;
     Animation animFlipOutBackward;
+
+    Button[] btGraph = new Button[3];
+    int[] resBtGraph = new int[]{R.id.id_bt_grph_val, R.id.id_bt_grph_weight, R.id.id_bt_grph_temp};
+    GraphClickListener[] graphClickListener = new GraphClickListener[3];
+    ArrayList<String> listGraphDates, listGraphValues;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -195,6 +205,12 @@ public class ACowTableForm extends AppCompatActivity {
                 R.anim.flipin_reverse);
         animFlipOutBackward = AnimationUtils.loadAnimation(this,
                 R.anim.flipout_reverse);
+
+        for(int i=0; i<3; i++){
+            btGraph[i] = findViewById(resBtGraph[i]);
+            graphClickListener[i] = new GraphClickListener(i);
+            btGraph[i].setOnClickListener(graphClickListener[i]);
+        }
     }
 
     public void ListPresenter(String id){
@@ -210,6 +226,7 @@ public class ACowTableForm extends AppCompatActivity {
 
     }
 
+    // Перемотка влево
     private void SwipeLeft() {
         if(flipStep<limitOfFlips){
             flipper.setInAnimation(animFlipInBackward);
@@ -222,6 +239,7 @@ public class ACowTableForm extends AppCompatActivity {
         }
     }
 
+    // Перемотка вправо
     private void SwipeRight() {
         if(flipStep>0){
             flipper.setInAnimation(animFlipInForward);
@@ -233,6 +251,7 @@ public class ACowTableForm extends AppCompatActivity {
         }
     }
 
+    // Обработка перемотки
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
@@ -259,6 +278,7 @@ public class ACowTableForm extends AppCompatActivity {
     GestureDetector gestureDetector = new GestureDetector(getBaseContext(),
             simpleOnGestureListener);
 
+    // Обработка кнопод добавления данных.
     public void onNewValue(View view){
         dataForm = new DataForm(0, 0);
     }
@@ -316,6 +336,7 @@ public class ACowTableForm extends AppCompatActivity {
         }
     }
 
+    // Получение статистических данных по трём позициям
     class DataForm{
 
         private int sub_mode;
@@ -519,6 +540,21 @@ public class ACowTableForm extends AppCompatActivity {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
+
+            // Ждем ответа сервера в течении 7-ми секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector.cancel(true);
+                }
+            };
+            countDownTimer.start();
         }
 
         /**
@@ -597,6 +633,8 @@ public class ACowTableForm extends AppCompatActivity {
                         }
                     }
 
+                    countDownTimer.cancel();
+
                     hm = new HashMap<>();
                     hm.put(TAG_ID_COW, st_id_cow);
                     dbConnector_values = new DBConnector_values();
@@ -606,10 +644,17 @@ public class ACowTableForm extends AppCompatActivity {
                 }
             });
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     /**
-     * Фоновый Async Task для загрузки данных по удоям по HTTP запросу
+     * Фоновый Async Task для загрузки данных по удоям, весу и температуре по HTTP запросу
      * */
     class DBConnector_values extends AsyncTask<String, String, String> {
 
@@ -622,7 +667,7 @@ public class ACowTableForm extends AppCompatActivity {
 
         private final static String TAG_REQUEST_MODE = "mode";
 
-        private String MESSAGE_NO_DATA;
+
 
         boolean newStart = false;
 
@@ -681,6 +726,21 @@ public class ACowTableForm extends AppCompatActivity {
                 pDialog.setCancelable(false);
                 pDialog.show();
             }
+
+            // Ждем ответа сервера в течении 7 секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector_values.cancel(true);
+                }
+            };
+            countDownTimer.start();
         }
 
         /**
@@ -789,6 +849,7 @@ public class ACowTableForm extends AppCompatActivity {
                     dbConnector_values.execute();
                 }else {
                     pDialog.dismiss();
+                    countDownTimer.cancel();
                 }
 
             }else {
@@ -802,6 +863,7 @@ public class ACowTableForm extends AppCompatActivity {
                     dbConnector_values.execute();
                 }else {
                     pDialog.dismiss();
+                    countDownTimer.cancel();
                 }
             }
 
@@ -820,6 +882,56 @@ public class ACowTableForm extends AppCompatActivity {
                     lv_values[section].setAdapter(adapter);
                 }
             });
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    // Обработка запроса графика статистических данных
+    class GraphClickListener implements View.OnClickListener {
+
+        int way;
+        String[] stWays;
+
+        GraphClickListener(int way){
+            this.way = way;
+
+            stWays = new String[]{getString(R.string.data_values),
+                    getString(R.string.data_weights), getString(R.string.data_temps),};
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            intent = new Intent(getApplicationContext(), ProgressSchedule.class);
+
+            listGraphDates = new ArrayList<>();
+            listGraphValues = new ArrayList<>();
+
+            // отправляем id в следующий activity
+            String stSendTitle = stWays[way] + ": " + st_cowName;
+            intent.putExtra(TAG_NAME_COW, stSendTitle);
+            for(int i=0; i<listValues.get(way).size(); i++){
+
+                listGraphDates.add(listValues.get(way).get(i).get(TAG_DATE_VALUES[way]));
+                listGraphValues.add(listValues.get(way).get(i).get(TAG_VALUE_VALUES[way]));
+
+            }
+
+            intent.putStringArrayListExtra("array_date", listGraphDates);
+            intent.putStringArrayListExtra("array_value", listGraphValues);
+
+
+            if(listGraphDates.get(0).equals(MESSAGE_NO_DATA)){
+                Toast.makeText(context, "No data to show", Toast.LENGTH_SHORT).show();
+            }else {
+                startActivity(intent);
+            }
         }
     }
 }

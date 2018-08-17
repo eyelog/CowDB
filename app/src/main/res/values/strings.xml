@@ -8,6 +8,8 @@
     <string name="add_data_value">Добавить данные по удоям</string>
     <string name="add_data_weight">Добавить данные по весу</string>
     <string name="add_data_temp">Добавить данные по температуре</string>
+    <string name="bt_graph">График</string>
+    <string name="back">Назад</string>
 
     <string name="title_name">Кличка: </string>
     <string name="title_id">ID: </string>
@@ -32,6 +34,7 @@
     <string name="create_herd">Создание нового стада</string>
     <string name="create_cow">Создание новой коровы</string>
     <string name="update_cow">Обновление данных коровы</string>
+    <string name="update_data">Обновление сетевой базы данных</string>
     <string name="name_cow">Кличка коровы</string>
     <string name="birthday_cow">День рождения коровы</string>
     <string name="save">Сохранить</string>

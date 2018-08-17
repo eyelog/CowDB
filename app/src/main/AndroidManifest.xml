@@ -10,17 +10,18 @@
         android:roundIcon="@mipmap/korova"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListOfFarms">
+        <activity android:name=".ListOfFarms" android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListOfHerds"/>
-        <activity android:name=".ListOfCows"/>
-        <activity android:name=".ACowTableForm"/>
+        <activity android:name=".ListOfHerds" android:screenOrientation="locked"/>
+        <activity android:name=".ListOfCows" android:screenOrientation="locked"/>
+        <activity android:name=".ACowTableForm" android:screenOrientation="locked"/>
         <activity android:name=".NewCowForm" android:screenOrientation="locked"/>
+        <activity android:name=".ProgressSchedule"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

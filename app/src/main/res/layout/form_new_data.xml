@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:padding="5dp"
+        android:maxLength="142"
         android:textAppearance="@android:style/TextAppearance.Large" />
 
     <LinearLayout

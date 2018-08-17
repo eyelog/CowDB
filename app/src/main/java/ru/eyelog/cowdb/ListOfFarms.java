@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -20,6 +21,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 public class ListOfFarms extends AppCompatActivity {
 
@@ -109,7 +112,7 @@ public class ListOfFarms extends AppCompatActivity {
 
         dbConnector = new DBConnector();
 
-        // Загружаем продукты в фоновом потоке
+        // Загружаем фермы в фоновом потоке
         dbConnector.doDBActive(1, null);
         dbConnector.execute();
 
@@ -223,7 +226,7 @@ public class ListOfFarms extends AppCompatActivity {
 
                 break;
 
-            // Удаление Персонажа.
+            // Удаление фермы.
             case CNX_DEL:
                 // Удаляем ферму на основании её ID.
                 // Запрашиваем подтверждение удаления.
@@ -338,6 +341,8 @@ public class ListOfFarms extends AppCompatActivity {
         private final static String TAG_REQUEST_ID = "id_farm";
         private final static String TAG_REQUEST_VALUE = "name_farm";
 
+        CountDownTimer countDownTimer;
+
         private String MESSAGE_NO_FARMS;
 
         DBConnector(){
@@ -384,10 +389,26 @@ public class ListOfFarms extends AppCompatActivity {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
+
+            // Ждем ответа сервера в течении 7-ми секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector.cancel(true);
+                }
+            };
+            countDownTimer.start();
+
         }
 
         /**
-         * Получаем все продукт из url
+         * Получаем все фермы из url
          * */
         protected String doInBackground(String... args) {
             // Будет хранить параметры
@@ -456,6 +477,10 @@ public class ListOfFarms extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            if(isCancelled()){
+                Log.e("Canceled intent", "got");
+            }
+
             return null;
         }
 
@@ -465,6 +490,7 @@ public class ListOfFarms extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // закрываем прогресс диалог после получение все продуктов
             pDialog.dismiss();
+            countDownTimer.cancel();
             // обновляем UI форму в фоновом потоке
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -487,6 +513,13 @@ public class ListOfFarms extends AppCompatActivity {
                     lv_farms.setAdapter(adapter);
                 }
             });
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            pDialog.dismiss();
         }
     }
 }

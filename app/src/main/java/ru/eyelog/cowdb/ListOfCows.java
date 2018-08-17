@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,6 +25,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.apache.http.NameValuePair;
@@ -83,7 +85,7 @@ public class ListOfCows extends AppCompatActivity {
     private static final  String TAG_NAME_COW = "name_cow";
     private static final  String TAG_PHOTO_COW = "photo_cow";
 
-    // url photo remover
+    // Удалени фото с сервера.
     private static final String url_photo_remove = "http://90.156.139.108/ServerCowFarms/image_delete.php";
     private static final  String TAG_PHOTO_DELETE = "deleteImage";
 
@@ -106,6 +108,8 @@ public class ListOfCows extends AppCompatActivity {
     Animation animFlipOutForward;
     Animation animFlipInBackward;
     Animation animFlipOutBackward;
+
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,6 +220,7 @@ public class ListOfCows extends AppCompatActivity {
 
     }
 
+    // Перемотка влево
     private void SwipeLeft() {
         if(flipStep<limitOfFlips){
             flipper.setInAnimation(animFlipInBackward);
@@ -228,6 +233,7 @@ public class ListOfCows extends AppCompatActivity {
         }
     }
 
+    // Перемотка вправо
     private void SwipeRight() {
         if(flipStep>0){
             flipper.setInAnimation(animFlipInForward);
@@ -239,6 +245,7 @@ public class ListOfCows extends AppCompatActivity {
         }
     }
 
+    // Обработка перемотки
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
@@ -287,7 +294,7 @@ public class ListOfCows extends AppCompatActivity {
 
         // Выбор действия для контекстного меню.
         switch (item.getItemId()){
-            // Показ статистики персонажа.
+            // Обновление данных коровы.
             case CNX_UPDATE:
 
                 // Запускаем новый intent который покажет нам Activity
@@ -304,9 +311,9 @@ public class ListOfCows extends AppCompatActivity {
 
                 break;
 
-            // Удаление Персонажа.
+            // Удаление коровы.
             case CNX_DEL:
-                // Удаляем ферму на основании её ID.
+                // Удаляем корову на основании её ID.
                 // Запрашиваем подтверждение удаления.
                 del_dialog = new AlertDialog.Builder(context);
 
@@ -339,8 +346,6 @@ public class ListOfCows extends AppCompatActivity {
                         dbConnector = new DBConnector();
                         dbConnector.doDBActive(4, hm);
                         dbConnector.execute();
-
-
 
                         showDialog.cancel();
                     }
@@ -391,7 +396,7 @@ public class ListOfCows extends AppCompatActivity {
     }
 
     /**
-     * Фоновый Async Task для загрузки всех ферм по HTTP запросу
+     * Фоновый Async Task для загрузки всех коров по HTTP запросу
      * */
     class DBConnector extends AsyncTask<String, String, String> {
 
@@ -450,6 +455,21 @@ public class ListOfCows extends AppCompatActivity {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
+
+            // Ждем ответа сервера в течении 7-ми секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector.cancel(true);
+                }
+            };
+            countDownTimer.start();
         }
 
         /**
@@ -507,7 +527,7 @@ public class ListOfCows extends AppCompatActivity {
 
                 } else {
                     // Фермы не найдены.
-                    // Выводим в список единственную строку: "Ферм нет"
+                    // Выводим в список единственную строку: "коров нет"
 
                     cowsList = new ArrayList<>();
                     // Создаем новый HashMap
@@ -536,6 +556,7 @@ public class ListOfCows extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // закрываем прогресс диалог после получение все продуктов
             pDialog.dismiss();
+            countDownTimer.cancel();
             // обновляем UI форму в фоновом потоке
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -569,6 +590,13 @@ public class ListOfCows extends AppCompatActivity {
                     lv_cows.setAdapter(adapter);
                 }
             });
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -607,8 +635,8 @@ public class ListOfCows extends AppCompatActivity {
             // получаем JSON строк с URL
             delJson = delJParser.makeHttpRequest(url_photo_remove, params);
 
-            Log.d(TAG_OF_CLASS, "What we send: " + url_photo_remove + params);
-            Log.d(TAG_OF_CLASS, "File remove: " + delJson.toString());
+            //Log.d(TAG_OF_CLASS, "What we send: " + url_photo_remove + params);
+            //Log.d(TAG_OF_CLASS, "File remove: " + delJson.toString());
 
             return null;
         }

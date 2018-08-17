@@ -19,7 +19,11 @@
         android:layout_alignParentTop="true"
         android:padding="5dp"
         android:text="@string/create_cow"
-        android:textAppearance="@android:style/TextAppearance.Large" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:shadowColor="@color/text_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
 
 
     <LinearLayout
@@ -63,7 +67,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/name_cow"
-                        android:textAppearance="@android:style/TextAppearance.Large" />
+                        android:textAppearance="@android:style/TextAppearance.Large"
+                        android:shadowColor="@color/text_shadow"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2"/>
 
                     <EditText
                         android:id="@+id/id_et_name"
@@ -85,7 +93,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/birthday_cow"
-                        android:textAppearance="@android:style/TextAppearance.Large" />
+                        android:textAppearance="@android:style/TextAppearance.Large"
+                        android:shadowColor="@color/text_shadow"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2"/>
 
                     <Button
                         android:id="@+id/button_date"

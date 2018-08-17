@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -75,6 +76,7 @@ public class NewCowForm extends AppCompatActivity {
 
     // Блок загрузки данных.
     private ProgressDialog pDialog;
+    CountDownTimer countDownTimer;
 
     JSONObject json, delJson;
     JSONParser jParser, delJParser;
@@ -159,7 +161,6 @@ public class NewCowForm extends AppCompatActivity {
             st_id_herd = intent.getStringExtra(TAG_ID_HERD);
             st_id_farm = intent.getStringExtra(TAG_ID_FARM);
 
-
             hm = new HashMap<>();
             hm.put(TAG_ID_COW, st_id_cow);
 
@@ -177,6 +178,7 @@ public class NewCowForm extends AppCompatActivity {
         }
         tv_Title.setText(stMainTitle);
 
+        // Вызов выбора способа получения катинки
         iv_MainPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,11 +236,18 @@ public class NewCowForm extends AppCompatActivity {
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
 
-            bmp = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            int bWidth = bmp.getWidth();
-            int bHight = bmp.getHeight();
-            Bitmap out = Bitmap.createScaledBitmap(bmp, bWidth/5, bHight/5, false);
-
+            Bitmap out = null;
+                    
+            try {
+                bmp = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                int bWidth = bmp.getWidth();
+                int bHight = bmp.getHeight();
+                out = Bitmap.createScaledBitmap(bmp, bWidth/5, bHight/5, false);
+            }catch (Exception e) {
+                Log.e("Got exception", e.toString());
+            }
+            
+            // Заготовка под кдрирование изображения
             /*
             Bitmap cutBitmap = Bitmap.createBitmap(out.getWidth() / 2,
                     out.getHeight() / 2, Bitmap.Config.ARGB_8888);
@@ -306,6 +315,7 @@ public class NewCowForm extends AppCompatActivity {
         Log.e("photoURI", photoURI.toString());
     }
 
+    // Создание файла изображения
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -328,6 +338,7 @@ public class NewCowForm extends AppCompatActivity {
         return image;
     }
 
+    // Получение даты рождения
     public void onDatePicker(View view){
 
         cow_age = new Cow_age(context);
@@ -375,6 +386,7 @@ public class NewCowForm extends AppCompatActivity {
 
     }
 
+    // Загрузка данных на сервер
     public void onSaveCow(View view){
 
         stGotName = et_name.getText().toString();
@@ -457,6 +469,7 @@ public class NewCowForm extends AppCompatActivity {
         finish();
     }
 
+    // Загрузка файла картинки на сервер
     public int uploadFile(String sourceFileUri) {
 
 
@@ -475,8 +488,6 @@ public class NewCowForm extends AppCompatActivity {
 
         if (!sourceFile.isFile()) {
 
-            //dialog.dismiss();
-
             Log.e("uploadFile", "Source File not exist :"
                     +uploadFilePath + "/" + uploadFileName);
 
@@ -494,7 +505,7 @@ public class NewCowForm extends AppCompatActivity {
         {
             try {
 
-                // open a URL connection to the Servlet
+                // open a URL connection
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
                 URL url = new URL(upLoadServerUri);
 
@@ -598,11 +609,11 @@ public class NewCowForm extends AppCompatActivity {
             //dialog.dismiss();
             return serverResponseCode;
 
-        } // End else block
+        }
     }
 
     /**
-     * Фоновый Async Task для загрузки всех ферм по HTTP запросу
+     * Фоновый Async Task для загрузки данных коровы по HTTP запросу
      * */
     class DBConnector extends AsyncTask<String, String, String> {
 
@@ -661,10 +672,25 @@ public class NewCowForm extends AppCompatActivity {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
+
+            // Ждем ответа сервера в течении 7-ми секунд.
+            // И если его не последовало, прерываем загрузку.
+            countDownTimer = new CountDownTimer(7000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
+                    // Do nothing
+                }
+
+                public void onFinish() {
+                    dbConnector.cancel(true);
+                }
+            };
+            countDownTimer.start();
         }
 
         /**
-         * Получаем все продукт из url
+         * Получаем все данные из url
          * */
         protected String doInBackground(String... args) {
             // Будет хранить параметры
@@ -698,7 +724,7 @@ public class NewCowForm extends AppCompatActivity {
          * **/
         protected void onPostExecute(String file_url) {
             // закрываем прогресс диалог после получение все продуктов
-            pDialog.dismiss();
+
             // обновляем UI форму в фоновом потоке
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -748,6 +774,8 @@ public class NewCowForm extends AppCompatActivity {
                                     }else{
                                         iv_MainPhoto.setImageResource(R.mipmap.korova);;
                                     }
+
+                                    pDialog.dismiss();
                                 }
 
                             } catch (JSONException e) {
@@ -764,8 +792,16 @@ public class NewCowForm extends AppCompatActivity {
                 }
             });
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            Toast.makeText(context, "Lost net connection.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
+    // Обработка запроса на удаление файла картинки
     class TaskFileDelete extends AsyncTask<String, String, String> {
 
         Uri uri;
