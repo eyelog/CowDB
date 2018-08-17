@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewflipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp"
+        tools:context=".ListOfFarms">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/id_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@mipmap/korova" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/id_tv_title_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_name"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                <TextView
+                    android:id="@+id/id_tv_title_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_id"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                <TextView
+                    android:id="@+id/id_tv_title_herd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_herd"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                <TextView
+                    android:id="@+id/id_tv_title_farm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_farm"
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/id_tv_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:text="@string/data_values"
+                                android:textAppearance="@android:style/TextAppearance.Large" />
+
+                            <ListView
+                                android:id="@+id/id_lv_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:layout_above="@+id/id_bt_value2"
+                                android:layout_below="@+id/id_tv_value2" />
+
+                            <Button
+                                android:id="@+id/id_bt_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="right"
+                                android:onClick="onNewValue"
+                                android:text="@string/add_data_value" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/id_tv_weight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/data_weights"
+                                android:textAppearance="@android:style/TextAppearance.Large" />
+
+                            <ListView
+                                android:id="@+id/id_lv_weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp" />
+
+                            <Button
+                                android:id="@+id/id_bt_weight"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:onClick="onNewWeight"
+                                android:text="@string/add_data_weight" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/id_tv_temp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/data_temps"
+                                android:textAppearance="@android:style/TextAppearance.Large" />
+
+                            <ListView
+                                android:id="@+id/id_lv_temp"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp" />
+
+                            <Button
+                                android:id="@+id/id_bt_temp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:onClick="onNewTemp"
+                                android:text="@string/add_data_temp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="45dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</ViewFlipper>

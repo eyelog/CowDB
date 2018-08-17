@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">CowDB</string>
+
+    <!-- Блок общих форм -->
+    <string name="list_of_farms">Список ферм</string>
+    <string name="list_of_herds">Стада фермы: </string>
+    <string name="list_of_cows">Список коров стада: </string>
+    <string name="add_data_value">Добавить данные по удоям</string>
+    <string name="add_data_weight">Добавить данные по весу</string>
+    <string name="add_data_temp">Добавить данные по температуре</string>
+
+    <string name="title_name">Кличка: </string>
+    <string name="title_id">ID: </string>
+    <string name="title_herd">Стадо: </string>
+    <string name="title_farm">Ферма: </string>
+
+    <!-- Блок контекстных меню -->
+    <string name="cnx_update_farm">Переименовать ферму</string>
+    <string name="cnx_del_farm">Удалить ферму</string>
+    <string name="cnx_update_herd">Переименовать стадо</string>
+    <string name="cnx_del_herd">Удалить стадо</string>
+    <string name="cnx_update_cow">Обновить данные коровы</string>
+    <string name="cnx_del_cow">Удалить корову</string>
+    <string name="cnx_update_value">Обновить данные</string>
+    <string name="cnx_del_value">Удалить данные</string>
+    <string name="cnx_get_pick">Получить картинку</string>
+    <string name="cnx_get_pick_cam">С камеры</string>
+    <string name="cnx_get_pick_gal">Из галлереи</string>
+
+    <!-- Блок высплывающих сообщений -->
+    <string name="create_farm">Создание новой фермы</string>
+    <string name="create_herd">Создание нового стада</string>
+    <string name="create_cow">Создание новой коровы</string>
+    <string name="update_cow">Обновление данных коровы</string>
+    <string name="name_cow">Кличка коровы</string>
+    <string name="birthday_cow">День рождения коровы</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отменить</string>
+    <string name="emptyLine">Пустая строка</string>
+    <string name="del_farm">Удалить ферму?</string>
+    <string name="del_herd">Удалить стадо?</string>
+    <string name="del_cow">Удалить корову?</string>
+    <string name="delete">Удалить</string>
+    <string name="data_values">Данные по удоям</string>
+    <string name="data_weights">Данные по весу</string>
+    <string name="data_temps">Данные по температуре</string>
+    <string name="data_date">По дате: </string>
+
+    <!-- Блок сообщений для списка -->
+    <string name="no_farms">Ферм нет</string>
+    <string name="no_herds">Ни одного стада</string>
+    <string name="no_cows">Коров нет</string>
+    <string name="no_data">Данных нет</string>
+
+    <!-- Блок асинхронных сообщений сообщений -->
+    <string name="creating_farm">"Создание фермы. Подождите..."</string>
+    <string name="loading_farms">"Загрузка ферм. Подождите..."</string>
+    <string name="loading_farm">"Загрузка фермы. Подождите..."</string>
+    <string name="updating_farm">"Обновление фермы. Подождите..."</string>
+    <string name="deleting_farm">"Удаление фермы. Подождите..."</string>
+
+    <string name="creating_herd">"Создание стада. Подождите..."</string>
+    <string name="loading_herds">"Загрузка стад. Подождите..."</string>
+    <string name="loading_herd">"Загрузка стада. Подождите..."</string>
+    <string name="updating_herd">"Обновление стада. Подождите..."</string>
+    <string name="deleting_herd">"Удаление стада. Подождите..."</string>
+
+    <string name="creating_cow">"Создание коровы. Подождите..."</string>
+    <string name="loading_cows">"Загрузка коров. Подождите..."</string>
+    <string name="loading_cow">"Загрузка коровы. Подождите..."</string>
+    <string name="updating_cow">"Обновление коровы. Подождите..."</string>
+    <string name="deleting_cow">"Удаление коровы. Подождите..."</string>
+
+    <string name="creating_data">"Создание данных. Подождите..."</string>
+    <string name="loading_datas">"Загрузка данных. Подождите..."</string>
+    <string name="loading_data">"Загрузка данных. Подождите..."</string>
+    <string name="updating_data">"Обновление данных. Подождите..."</string>
+    <string name="deleting_data">"Удаление данных. Подождите..."</string>
+
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/id_tv_listherds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="5dp"
+        android:text="@string/list_of_farms"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <ListView
+        android:id="@+id/id_lv_farms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/id_bt_newcows"
+        android:layout_below="@+id/id_tv_listherds">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/id_bt_newcows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onNewFarm"
+        android:text="@string/create_farm" />
+</RelativeLayout>

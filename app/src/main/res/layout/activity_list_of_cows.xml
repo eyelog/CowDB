@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewflipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <TextView
+            android:id="@+id/id_tv_listcows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="5dp"
+            android:text="@string/list_of_cows"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <ListView
+            android:id="@+id/id_lv_cows"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/id_bt_newcow"
+            android:layout_below="@+id/id_tv_listcows">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/id_bt_newcow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="onNewCow"
+            android:text="@string/create_cow" />
+    </RelativeLayout>
+
+</ViewFlipper>
