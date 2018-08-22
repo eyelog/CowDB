@@ -90,6 +90,7 @@ public class ListOfHerds extends AppCompatActivity {
     JSONParser jParser;
     JSONArray herds = null;
     ArrayList<NameValuePair> params;
+    int timeout;
 
     String stMainTitle;
     String st_id_farm, st_farmName, st_id_herd, st_herdName;
@@ -127,6 +128,7 @@ public class ListOfHerds extends AppCompatActivity {
         stEmpty = getString(R.string.emptyLine);
         stUpdate = getString(R.string.cnx_update_herd);
         stDel = getString(R.string.cnx_del_herd);
+        timeout = getResources().getInteger(R.integer.timeout);
 
         if(farmsListID.size()>1){
             limitOfFlips = farmsListID.size()-1;
@@ -520,9 +522,9 @@ public class ListOfHerds extends AppCompatActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
-            // Ждем ответа сервера в течении 7-ми секунд.
+            // Ждем ответа сервера в течении заданного периода.
             // И если его не последовало, прерываем загрузку.
-            countDownTimer = new CountDownTimer(7000, 1000) {
+            countDownTimer = new CountDownTimer(timeout, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);

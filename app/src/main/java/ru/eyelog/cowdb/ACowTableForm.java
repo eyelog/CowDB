@@ -103,6 +103,7 @@ public class ACowTableForm extends AppCompatActivity {
 
     JSONObject json, subJson;
     JSONParser jParser;
+    int timeout;
 
     ArrayList<NameValuePair> params;
     int success;
@@ -189,6 +190,7 @@ public class ACowTableForm extends AppCompatActivity {
         stTitleID = getString(R.string.title_id);
         stTitleHerd = getString(R.string.title_herd);
         stTitleFarm = getString(R.string.title_farm);
+        timeout = getResources().getInteger(R.integer.timeout);
 
         context = this;
         jParser = new JSONParser();
@@ -541,9 +543,9 @@ public class ACowTableForm extends AppCompatActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
-            // Ждем ответа сервера в течении 7-ми секунд.
+            // Ждем ответа сервера в течении заданного периода.
             // И если его не последовало, прерываем загрузку.
-            countDownTimer = new CountDownTimer(7000, 1000) {
+            countDownTimer = new CountDownTimer(timeout, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
@@ -727,9 +729,9 @@ public class ACowTableForm extends AppCompatActivity {
                 pDialog.show();
             }
 
-            // Ждем ответа сервера в течении 7 секунд.
+            // Ждем ответа сервера в течении заданного периода.
             // И если его не последовало, прерываем загрузку.
-            countDownTimer = new CountDownTimer(7000, 1000) {
+            countDownTimer = new CountDownTimer(timeout, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);

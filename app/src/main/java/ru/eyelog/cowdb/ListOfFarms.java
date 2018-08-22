@@ -81,6 +81,7 @@ public class ListOfFarms extends AppCompatActivity {
     JSONParser jParser;
     JSONArray farms = null;
     ArrayList<NameValuePair> params;
+    int timeout;
 
     String st_id, st_farmName;
 
@@ -104,6 +105,7 @@ public class ListOfFarms extends AppCompatActivity {
         stEmpty = getString(R.string.emptyLine);
         stUpdate = getString(R.string.cnx_update_farm);
         stDel = getString(R.string.cnx_del_farm);
+        timeout = getResources().getInteger(R.integer.timeout);timeout = getResources().getInteger(R.integer.timeout);
 
         ListPresenter();
     }
@@ -390,9 +392,9 @@ public class ListOfFarms extends AppCompatActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
-            // Ждем ответа сервера в течении 7-ми секунд.
+            // Ждем ответа сервера в течении заданного периода.
             // И если его не последовало, прерываем загрузку.
-            countDownTimer = new CountDownTimer(7000, 1000) {
+            countDownTimer = new CountDownTimer(timeout, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);

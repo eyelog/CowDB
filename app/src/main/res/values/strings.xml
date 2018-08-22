@@ -10,6 +10,7 @@
     <string name="add_data_temp">Добавить данные по температуре</string>
     <string name="bt_graph">График</string>
     <string name="back">Назад</string>
+    <string name="period">Период</string>
 
     <string name="title_name">Кличка: </string>
     <string name="title_id">ID: </string>
@@ -28,6 +29,14 @@
     <string name="cnx_get_pick">Получить картинку</string>
     <string name="cnx_get_pick_cam">С камеры</string>
     <string name="cnx_get_pick_gal">Из галлереи</string>
+
+    <string name="prd_00">Последние 7 дней</string>
+    <string name="prd_01">Текущий месяц</string>
+    <string name="prd_02">Последние 30 дней</string>
+    <string name="prd_03">Последние 180 дней</string>
+    <string name="prd_04">Текущий год</string>
+    <string name="prd_05">Весь срок</string>
+    <string name="prd_06">Выбрать период</string>
 
     <!-- Блок высплывающих сообщений -->
     <string name="create_farm">Создание новой фермы</string>

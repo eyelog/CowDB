@@ -53,7 +53,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onGetPeriod"
+            android:onClick="onBack"
             android:text="@string/back" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onGetPeriod"
+            android:text="@string/period" />
     </LinearLayout>
 </RelativeLayout>

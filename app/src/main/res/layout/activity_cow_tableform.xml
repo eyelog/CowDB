@@ -145,7 +145,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:text="@string/bt_graph" />
+                                android:text="@string/bt_graph"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -182,7 +183,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:text="@string/bt_graph" />
+                                android:text="@string/bt_graph"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -220,7 +222,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                android:text="@string/bt_graph" />
+                                android:text="@string/bt_graph"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 

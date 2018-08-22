@@ -82,6 +82,7 @@ public class NewCowForm extends AppCompatActivity {
     JSONParser jParser, delJParser;
     ArrayList<NameValuePair> params;
     String stGotName, stEmpty;
+    int timeout;
 
     HashMap<String, String> hm;
 
@@ -227,6 +228,7 @@ public class NewCowForm extends AppCompatActivity {
 
         items = new CharSequence[]{getString(R.string.cnx_get_pick_cam), getString(R.string.cnx_get_pick_gal),
                 getString(R.string.cancel)};
+        timeout = getResources().getInteger(R.integer.timeout);
     }
 
     @Override
@@ -673,9 +675,9 @@ public class NewCowForm extends AppCompatActivity {
             pDialog.setCancelable(false);
             pDialog.show();
 
-            // Ждем ответа сервера в течении 7-ми секунд.
+            // Ждем ответа сервера в течении заданного периода.
             // И если его не последовало, прерываем загрузку.
-            countDownTimer = new CountDownTimer(7000, 1000) {
+            countDownTimer = new CountDownTimer(timeout, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     Log.e("Tik-tak","seconds remaining: " + millisUntilFinished / 1000);
